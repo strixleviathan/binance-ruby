@@ -14,13 +14,14 @@ module Binance
                           params: params, security_type: :withdraw)
           end
 
-          def history!(recvWindow: nil)
+          def history!(recvWindow: nil, email: nil, startTime: nil, endTime: nil, page: nil, limit: nil)
             timestamp = Binance::Api::Configuration.timestamp
             params = {
+              email: email, startTime: startTime, endTime: endTime, page: page, limit: limit,
               recvWindow: recvWindow, timestamp: timestamp
             }.delete_if { |key, value| value.nil? }
 
-            path = "/wapi/v3/sub-account/history.html"
+            path = "/wapi/v3/sub-account/transfer/history.html"
             Request.send!(api_key_type: :trading, method: :get, path: path,
                           params: params, security_type: :withdraw)
           end

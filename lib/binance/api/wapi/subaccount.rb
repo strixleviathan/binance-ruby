@@ -37,7 +37,7 @@ module Binance
                           params: params, security_type: :withdraw)
           end
 
-          def transfers!(fromEmail: nil, toEmail: nil, asset: nil, amount: nil, recvWindow: nil)
+          def transfer!(fromEmail: nil, toEmail: nil, asset: nil, amount: nil, recvWindow: nil)
             params = {
               fromEmail: fromEmail, toEmail: toEmail, asset: asset, amount: amount,
               recvWindow: recvWindow, timestamp: timestamp

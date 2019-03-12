@@ -47,7 +47,7 @@ module Binance
 
             path = "/wapi/v3/sub-account/transfer.html"
             Request.send!(api_key_type: :trading, method: :post, path: path,
-                          params: params, security_type: :withdraw)
+                          params: params, security_type: :withdraw, post_with_query_args: true)
           end
 
           private def ensure_required_keys!(params:, required_keys:)

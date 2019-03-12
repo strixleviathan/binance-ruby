@@ -3,6 +3,13 @@ module Binance
     class Request
       include HTTParty
 
+      # Skip the URI serialization provided by HTTParty, it breaks Binance's WAPI
+      query_string_normalizer proc { |query|
+        query.map do |key, value|
+          [value].flatten.map {|v| "#{key}=#{v}"}.join('&')
+        end.join('&')
+      }
+
       base_uri 'https://api.binance.com'
 
       class << self
@@ -15,6 +22,7 @@ module Binance
           # send() is insecure so don't use it.
           case method
           when :get
+            puts params
             response = get(path, headers: all_headers, query: params)
           when :post
             response = post(path, body: params, headers: all_headers)

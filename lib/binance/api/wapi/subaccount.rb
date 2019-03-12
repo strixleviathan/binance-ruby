@@ -4,7 +4,6 @@ module Binance
       module Subaccount
         class << self
           def list!(recvWindow: nil)
-            timestamp = Binance::Api::Configuration.timestamp
             params = {
               recvWindow: recvWindow, timestamp: timestamp
             }.delete_if { |key, value| value.nil? }
@@ -14,8 +13,7 @@ module Binance
                           params: params, security_type: :withdraw)
           end
 
-          def history!(recvWindow: nil, email: nil, startTime: nil, endTime: nil, page: nil, limit: nil)
-            timestamp = Binance::Api::Configuration.timestamp
+          def history!(email: nil, startTime: nil, endTime: nil, page: nil, limit: nil, recvWindow: nil)
             params = {
               email: email, startTime: startTime, endTime: endTime, page: page, limit: limit,
               recvWindow: recvWindow, timestamp: timestamp
@@ -26,10 +24,10 @@ module Binance
                           params: params, security_type: :withdraw)
           end
 
-          def assets!(email: nil, recvWindow: nil)
-            timestamp = Binance::Api::Configuration.timestamp
+          def assets!(email: nil, symbol: nil, recvWindow: nil)
             params = {
-              email: email, recvWindow: recvWindow, timestamp: timestamp
+              email: email, symbol: symbol,
+              recvWindow: recvWindow, timestamp: timestamp
             }.delete_if { |key, value| value.nil? }
 
             ensure_required_keys!(params: params, required_keys: %i[email])
@@ -40,7 +38,6 @@ module Binance
           end
 
           def transfers!(fromEmail: nil, toEmail: nil, asset: nil, amount: nil, recvWindow: nil)
-            timestamp = Binance::Api::Configuration.timestamp
             params = {
               fromEmail: fromEmail, toEmail: toEmail, asset: asset, amount: amount,
               recvWindow: recvWindow, timestamp: timestamp
@@ -56,6 +53,10 @@ module Binance
           private def ensure_required_keys!(params:, required_keys:)
             missing_keys = required_keys.select { |key| params[key].nil? }
             raise Error.new(message: "required keys are missing: #{missing_keys.join(', ')}") unless missing_keys.empty?
+          end
+
+          private def timetsamp
+            Binance::Api::Configuration.timestamp
           end
         end
       end

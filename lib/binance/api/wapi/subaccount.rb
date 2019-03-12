@@ -10,7 +10,7 @@ module Binance
             }.delete_if { |key, value| value.nil? }
 
             path = "/wapi/v3/sub-account/list.html"
-            Request.get!(api_key_type: :trading, method: :post, path: path,
+            Request.send!(api_key_type: :trading, method: :get, path: path,
                           params: params, security_type: :withdraw)
           end
 
@@ -21,7 +21,7 @@ module Binance
             }.delete_if { |key, value| value.nil? }
 
             path = "/wapi/v3/sub-account/history.html"
-            Request.get!(api_key_type: :trading, method: :post, path: path,
+            Request.send!(api_key_type: :trading, method: :get, path: path,
                           params: params, security_type: :withdraw)
           end
 
@@ -34,7 +34,7 @@ module Binance
             ensure_required_keys!(params: params, required_keys: %i[email])
 
             path = "/wapi/v3/sub-account/assets.html"
-            Request.get!(api_key_type: :trading, method: :post, path: path,
+            Request.send!(api_key_type: :trading, method: :get, path: path,
                           params: params, security_type: :withdraw)
           end
 

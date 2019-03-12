@@ -3,13 +3,6 @@ module Binance
     class Request
       include HTTParty
 
-      # Skip the URI serialization provided by HTTParty, it breaks Binance's WAPI
-      query_string_normalizer proc { |query|
-        query.map do |key, value|
-          [value].flatten.map {|v| "#{key}=#{v}"}.join('&')
-        end.join('&')
-      }
-
       base_uri 'https://api.binance.com'
 
       class << self
@@ -60,8 +53,7 @@ module Binance
         end
 
         def signed_request_signature(params:)
-          payload = params.map { |key, value| "#{key}=#{value}" }.join('&')
-          Configuration.signed_request_signature(payload: payload)
+          Configuration.signed_request_signature(payload: URI.encode_www_form(params))
         end
       end
     end

@@ -3,10 +3,17 @@ module Binance
     class Request
       include HTTParty
 
+      # Skip the URI serialization provided by HTTParty, it breaks Binance's WAPI
+      query_string_normalizer proc { |query|
+        query.map do |key, value|
+          [value].flatten.map {|v| "#{key}=#{v}"}.join('&')
+        end.join('&')
+      }
+
       base_uri 'https://api.binance.com'
 
       class << self
-        def send!(api_key_type: :none, headers: {}, method: :get, path: '/', params: {}, security_type: :none)
+        def send!(api_key_type: :none, headers: {}, method: :get, path: '/', params: {}, security_type: :none, post_with_query_args: false)
           raise Error.new(message: "invalid security type #{security_type}") unless security_types.include?(security_type)
           all_headers = default_headers(api_key_type: api_key_type, security_type: security_type)
           params.delete_if { |k, v| v.nil? }
@@ -17,7 +24,11 @@ module Binance
           when :get
             response = get(path, headers: all_headers, query: params)
           when :post
-            response = post(path, body: params, headers: all_headers)
+            response = if post_with_query_args
+                         post(path, query: params, headers: all_headers)
+                       else
+                         post(path, body: params, headers: all_headers)
+                       end
           when :put
             response = put(path, body: params, headers: all_headers)
           when :delete

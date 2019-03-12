@@ -55,7 +55,7 @@ module Binance
             raise Error.new(message: "required keys are missing: #{missing_keys.join(', ')}") unless missing_keys.empty?
           end
 
-          private def timetsamp
+          private def timestamp
             Binance::Api::Configuration.timestamp
           end
         end

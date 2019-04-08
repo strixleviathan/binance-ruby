@@ -24,7 +24,7 @@ module Binance
           }.delete_if { |key, value| value.nil? }
 
           path = "/wapi/v3/depositHistory.html"
-          Request.send!(api_key_type: :trading, method: :post, path: path,
+          Request.send!(api_key_type: :trading, method: :get, path: path,
                         params: params, security_type: :withdraw)
 
         end
@@ -36,7 +36,7 @@ module Binance
           }.delete_if { |key, value| value.nil? }
 
           path = "/wapi/v3/withdrawHistory.html"
-          Request.send!(api_key_type: :trading, method: :post, path: path,
+          Request.send!(api_key_type: :trading, method: :get, path: path,
                         params: params, security_type: :withdraw)
 
         end

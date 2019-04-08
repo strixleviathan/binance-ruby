@@ -17,6 +17,18 @@ module Binance
                         params: params, security_type: :withdraw)
         end
 
+        def deposit_history(asset: nil)
+          timestamp = Binance::Api::Configuration.timestamp
+          params = {
+            asset: asset
+          }.delete_if { |key, value| value.nil? }
+
+          path = "/wapi/v3/depositHistory.html"
+          Request.send!(api_key_type: :trading, method: :post, path: path,
+                        params: params, security_type: :withdraw)
+
+        end
+
         def withdraw_history(asset: nil)
           timestamp = Binance::Api::Configuration.timestamp
           params = {

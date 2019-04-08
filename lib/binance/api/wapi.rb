@@ -17,10 +17,11 @@ module Binance
                         params: params, security_type: :withdraw)
         end
 
-        def deposit_history(asset: nil)
+        def deposit_history(asset: nil, recvWindow: nil)
           timestamp = Binance::Api::Configuration.timestamp
           params = {
-            asset: asset
+            asset: asset,
+            recvWindow: recvWindow, timestamp: timestamp
           }.delete_if { |key, value| value.nil? }
 
           path = "/wapi/v3/depositHistory.html"
@@ -29,10 +30,11 @@ module Binance
 
         end
 
-        def withdraw_history(asset: nil)
+        def withdraw_history(asset: nil, recvWindow: nil)
           timestamp = Binance::Api::Configuration.timestamp
           params = {
-            asset: asset
+            asset: asset,
+            recvWindow: recvWindow, timestamp: timestamp
           }.delete_if { |key, value| value.nil? }
 
           path = "/wapi/v3/withdrawHistory.html"

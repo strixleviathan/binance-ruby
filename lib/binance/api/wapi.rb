@@ -14,7 +14,7 @@ module Binance
 
           path = "/wapi/v3/withdraw.html"
           Request.send!(api_key_type: :trading, method: :post, path: path,
-                        params: params, security_type: :withdraw)
+                        params: params, security_type: :withdraw, post_with_query_args: true)
         end
 
         def deposit_history(asset: nil, recvWindow: nil)
